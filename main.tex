@@ -1,5 +1,77 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
+\documentclass{beamer}
+
+\mode<presentation>
+{
+  \usetheme{default}
+  \usecolortheme{default}
+  \usefonttheme{default}
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+  \setbeamertemplate{footline}[page number]
+  \setbeamercolor{frametitle}{fg=white}
+  \setbeamercolor{footline}{fg=black}
+} 
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{courier}
+\usepackage{array}
+\usepackage{bold-extra}
+
+\xdefinecolor{darkblue}{rgb}{0.1,0.1,0.7}
+\xdefinecolor{darkgreen}{rgb}{0,0.5,0}
+\xdefinecolor{darkgrey}{rgb}{0.35,0.35,0.35}
+\xdefinecolor{darkorange}{rgb}{0.8,0.5,0}
+\xdefinecolor{darkred}{rgb}{0.7,0,0}
+\xdefinecolor{dianablue}{rgb}{0.18,0.24,0.31}
+\definecolor{commentgreen}{rgb}{0,0.6,0}
+\definecolor{stringmauve}{rgb}{0.58,0,0.82}
+
 \begin{document}
-Just a bag of diagrams.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+\vspace{0.5 cm}
+{\bf Requirements:}
+
+\small
+\begin{itemize}
+\item To be useful for interactive analysis and competitive with private skims, the query system has to respond to typical queries in $\mathcal{O}(\mbox{1 sec})$. Unusual queries, which touch many unusual fields, may take as long as $\mathcal{O}(\mbox{15 min})$. Users should be able to predict their case (few/many fields, mid-day/late-night, etc.).
+\begin{itemize}
+\item The hardware and software must be whatever it has to be to make this happen. If university groups have to pool resources for a private cluster to avoid cache contention, so be it.
+\item Hardware scales with cost, but software we can control: we aim for 90--95\% of optimal usage because we can.
+\end{itemize}
+
+\item Every calculation deals with structure manipulation and raw numerics. Femtocode puts the structure manipulation up-front in a way that does not scale with the size of the dataset. For large datasets, we can divide the work such that 90--95\% is spent in the raw numerics, rather than the slow setup.
+\begin{itemize}
+\item The slow setup can be unoptimized Python because even then, it's $\mathcal{O}(\mbox{1 ms})$, easy to stay within our latency budget.
+\item The raw numerics must be highly tuned.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\vspace{0.5 cm}
+{\bf Requirements:}
+
+\small
+\begin{itemize}
+\item Users can preempt cache from each other, but we can't force $\mathcal{O}(\mbox{1 sec})$ and $\mathcal{O}(\mbox{15 min})$ jobs to run in the order submitted. The interactive user who needs 1 sec turn-around to keep their train of thought will stop using the system if it sometimes takes 15 min.
+\begin{itemize}
+\item Therefore, the work order must be first-ready first-serve, rather than first-come first-serve.
+\end{itemize}
+
+\item Disk or network I/O is orders of magnitude slower than in-memory processing. To the degree allowed by data dependencies, they must not be sequential.
+\begin{itemize}
+\item Therefore, I/O and processing must either run in separate threads or be reactive (Javascript-style callbacks). (I chose threading because the raw numerics thread can be pinned to a CPU and its local memory resources.)
+\end{itemize}
+
+\item Multithreading is complicated and can lead to subtle bugs. Therefore, the number of interacting threads must be {\it minimized.}
+
+\item Allowing external code; segregate computations in isolated processes to recover from segmentation faults.
+
+\end{itemize}
+\end{frame}
+
 \end{document}
