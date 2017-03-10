@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="dependencygraph_1.svg">
+   sodipodi:docname="dependencygraph_1.svg"
+   inkscape:export-filename="/home/pivarski/talks/2017-02-22-fermiscope-bag-of-diagrams/dependencygraph_1.png"
+   inkscape:export-xdpi="81.75"
+   inkscape:export-ydpi="81.75">
   <defs
      id="defs4">
     <marker
@@ -431,7 +434,7 @@
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1488"
+     inkscape:window-width="1283"
      inkscape:window-height="1027"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -450,7 +453,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
